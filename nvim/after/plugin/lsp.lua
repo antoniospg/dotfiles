@@ -21,8 +21,8 @@ local lsp_capabilities = require('cmp_nvim_lsp').default_capabilities()
 
 require('mason').setup({})
 require('mason-lspconfig').setup({
-    ensure_installed = {'tsserver', 'rust_analyzer', 'zls', 'bashls',
-    'asm_lsp', 'cmake', 'glsl_analyzer', 'opencl_ls', 'pylsp'},
+    ensure_installed = {'gopls', 'clangd', 'rust_analyzer', 'zls', 'bashls',
+    'asm_lsp', 'cmake', 'glsl_analyzer', 'opencl_ls', 'pylsp', 'csharp_ls'},
     handlers = {
         function(server_name)
             require('lspconfig')[server_name].setup({
@@ -49,6 +49,19 @@ require('mason-lspconfig').setup({
                 }
             })
         end,
+        clangd = function()
+            require("lspconfig").clangd.setup({
+                on_new_config = function(config)
+                    config.cmd = {
+                        "clangd",
+                        "--background-index",
+                        "--query-driver",
+                        "~/Documents/git/serenity/Toolchain/Local/**/*",
+                        "--header-insertion=never",
+                    }
+                end,
+            })
+        end,
         zls = function()
             require('lspconfig').zls.setup({
                 capabilities = lsp_capabilities,
@@ -58,6 +71,9 @@ require('mason-lspconfig').setup({
             require('lspconfig').rust_analyzer.setup({
                 settings = {
                     ["rust-analyzer"] = {
+                        rustc = {
+                          source = "discover"
+                        },
                         imports = {
                             granularity = {
                                 group = "module",

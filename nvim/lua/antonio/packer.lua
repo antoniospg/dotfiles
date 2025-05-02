@@ -16,11 +16,16 @@ return require('packer').startup(function(use)
     as = 'kanagawa' , config = function()
         vim.cmd("colorscheme kanagawa-dragon")
     end})
+    use 'Mofiqul/vscode.nvim'
     --use 'mbbill/undotree'
     use 'tomasky/bookmarks.nvim'
     use 'tpope/vim-fugitive'
     use 'sbdchd/neoformat'
+    use 'nvim-treesitter/nvim-treesitter-context'
     --use 'preservim/nerdtree'
+    use 'rose-pine/neovim'
+    use 'marko-cerovac/material.nvim'
+    use "lukas-reineke/indent-blankline.nvim"
     use 'nvim-tree/nvim-web-devicons' -- OPTIONAL: for file icons
     use 'lewis6991/gitsigns.nvim' -- OPTIONAL: for git status
     use 'romgrk/barbar.nvim'
