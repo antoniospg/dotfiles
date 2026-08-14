@@ -4,8 +4,7 @@ return require('packer').startup(function(use)
     -- Packer can manage itself
     use 'wbthomason/packer.nvim'
     use {
-        'nvim-telescope/telescope.nvim', tag = '0.1.6',
-        -- or                            , branch = '0.1.x',
+        'nvim-telescope/telescope.nvim', tag = '0.1.x',
         requires = { {'nvim-lua/plenary.nvim'} }
     }
     use {
@@ -40,14 +39,18 @@ return require('packer').startup(function(use)
         require("toggleterm").setup()
     end}
     use {'VonHeikemen/lsp-zero.nvim', branch = 'v3.x',
-    requires = {
-        {'williamboman/mason.nvim'},
-        {'williamboman/mason-lspconfig.nvim'},
-        {'neovim/nvim-lspconfig'},
-        {'hrsh7th/cmp-nvim-lsp'},
-        {'hrsh7th/nvim-cmp'},
-        {'L3MON4D3/LuaSnip'},
+      requires = {
+          {'williamboman/mason.nvim'},
+          {'williamboman/mason-lspconfig.nvim'},
+          {'neovim/nvim-lspconfig'},
+          {'hrsh7th/cmp-nvim-lsp'},
+          {'hrsh7th/nvim-cmp'},
+          {'L3MON4D3/LuaSnip'},
+      }
     }
-}
+
+    if packer_bootstrap then
+      require('packer').sync()
+    end
 end)
 

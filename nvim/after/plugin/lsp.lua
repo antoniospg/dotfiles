@@ -13,16 +13,30 @@ vim.api.nvim_create_autocmd('LspAttach', {
     vim.keymap.set('n', '<leader>vrr', function() vim.lsp.buf.references() end, opts)
     vim.keymap.set('n', '<leader>vrn', function() vim.lsp.buf.rename() end, opts)
     vim.keymap.set('i', '<C-h>', function() vim.lsp.buf.signature_help() end, opts)
-    vim.diagnostic.disable()
+    vim.diagnostic.enable(false)
   end,
 })
 
 local lsp_capabilities = require('cmp_nvim_lsp').default_capabilities()
 
+vim.lsp.config('rust_analyzer', {
+    cmd = { 'rust-analyzer' },
+    filetypes = { 'rust' },
+    root_markers = { 'Cargo.toml', 'Cargo.lock' },
+    capabilities = lsp_capabilities,
+    settings = {
+        ['rust-analyzer'] = {
+            cargo = { buildScripts = { enable = true } },
+            procMacro = { enable = true },
+        }
+    }
+})
+vim.lsp.enable('rust_analyzer')
+
 require('mason').setup({})
 require('mason-lspconfig').setup({
-    ensure_installed = {'gopls', 'clangd', 'rust_analyzer', 'zls', 'bashls',
-    'asm_lsp', 'cmake', 'glsl_analyzer', 'opencl_ls', 'pylsp', 'csharp_ls'},
+    ensure_installed = {'clangd', 'zls', 'bashls',
+    'glsl_analyzer', 'opencl_ls', 'pyright'},
     handlers = {
         function(server_name)
             require('lspconfig')[server_name].setup({
@@ -67,31 +81,31 @@ require('mason-lspconfig').setup({
                 capabilities = lsp_capabilities,
             })
         end,
-        rust_analyzer = function()
-            require('lspconfig').rust_analyzer.setup({
-                settings = {
-                    ["rust-analyzer"] = {
-                        rustc = {
-                          source = "discover"
-                        },
-                        imports = {
-                            granularity = {
-                                group = "module",
-                            },
-                            prefix = "self",
-                        },
-                        cargo = {
-                            buildScripts = {
-                                enable = true,
-                            },
-                        },
-                        procMacro = {
-                            enable = true
-                        },
-                    }
-                }
-            })
-        end,
+        --rust_analyzer = function()
+        --    require('lspconfig').rust_analyzer.setup({
+        --        settings = {
+        --            ["rust-analyzer"] = {
+        --                rustc = {
+        --                  source = "discover"
+        --                },
+        --                imports = {
+        --                    granularity = {
+        --                        group = "module",
+        --                    },
+        --                    prefix = "self",
+        --                },
+        --                cargo = {
+        --                    buildScripts = {
+        --                        enable = true,
+        --                    },
+        --                },
+        --                procMacro = {
+        --                    enable = true
+        --                },
+        --            }
+        --        }
+        --    })
+        --end,
     }
 })
 
